@@ -99,7 +99,7 @@ cc.Class({
 
     getALayer(options){
         var ins_len = this.mInslayers.length;
-        var randIndex = 0;//Math.floor(cc.random0To1() * ins_len);
+        var randIndex = Math.floor(cc.random0To1() * ins_len);
         cc.log("randIndex is %s %s",randIndex,ins_len);
         var res  = cc.instantiate(this.mInslayers[randIndex]);
         cc.log("getALayer %s",res.name);
@@ -113,10 +113,13 @@ cc.Class({
         this.node.y = posY;
         //(960 - this.initUsePos)
         cc.log("hhhhh %s %s",posY + 960,- this.initUsePos);
-        if(posY  > ( - this.initUsePos) - this.m_layers[this.m_layers.length -1].height * 1/100)
+        if(posY + 960 > ( - this.initUsePos) - this.m_layers[this.m_layers.length -1].height * 1/100)
         {
-            var tl = this.m_layers.shift();
-            tl.removeFromParent();
+            var tl
+            if(this.m_layers.length > 2 ){
+                tl = this.m_layers.shift();
+                tl.removeFromParent();
+            }
 
             this.m_currentLayer = this.m_layers[0];
             this.m_nextLayer = this.getALayer();
