@@ -20,8 +20,8 @@ cc.Class({
         meetDiff : 0,
         score:1,
         combo:false,
-        pAcc:false,
-        rand:[],
+        pSpeed:100,
+        weight:[],
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching

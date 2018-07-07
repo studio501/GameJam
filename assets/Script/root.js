@@ -88,5 +88,9 @@ cc.Class({
 
     },
 
+    buttonClick:function (event,cd) {
+        console.log("button click = " + event.name);
+    }
+
     // update (dt) {},
 });
