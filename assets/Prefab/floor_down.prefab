@@ -121,15 +121,15 @@
     },
     "_enabled": true,
     "panelType": 0,
-    "speed": 0,
+    "speed": 200,
     "isDown": -1,
     "isBlack": true,
     "meetSame": false,
     "meetDiff": 0,
     "score": 1,
     "combo": false,
-    "pAcc": false,
-    "rand": []
+    "pSpeed": 100,
+    "weight": []
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -137,7 +137,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "87fac036-816a-467e-81f4-4bc43768ab36"
     },
     "fileId": "dfgn/WSZ9Kda4ciT/PI8CZ",
     "sync": false

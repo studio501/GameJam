@@ -65,7 +65,7 @@ cc.Class({
 
     getALayer(options){
         var ins_len = this.mInslayers.length;
-        var randIndex = Math.floor(cc.random0To1() * ins_len);
+        var randIndex = 0;//Math.floor(cc.random0To1() * ins_len);
         cc.log("randIndex is %s %s",randIndex,ins_len);
         var res  = cc.instantiate(this.mInslayers[randIndex]);
         if(!res){
@@ -85,12 +85,14 @@ cc.Class({
     },
 
     start () {
-
+        // this.addTouchEvent();
     },
 
     buttonClick:function (event,cd) {
-        console.log("button click = " + event.name);
-    }
+        console.log("button click = " + event.type);
+    },
+
+
 
     // update (dt) {},
 });

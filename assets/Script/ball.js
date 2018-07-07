@@ -15,7 +15,7 @@ cc.Class({
         gravity: -1000,
         speed: cc.v2(0, 0),
         maxSpeed: cc.v2(2000, 2000),
-        stayPosy : 640,
+        stayPosy : 200,
         direction : 0,
         layerRoot :{
             default:null,
@@ -57,6 +57,8 @@ cc.Class({
 
     start () {
         //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
+
+        this.m_rotateOnPanel = Math.abs(cc.degreesToRadians(30));
     },
 
     onEnable: function () {
@@ -78,15 +80,20 @@ cc.Class({
 
         var comp = other.node.getComponent('panel');
 
-        cc.log("other collision stay enter %s (%s,%s)",comp.m_testFlag,this.speed.x,this.speed.y);
+        
 
         this.direction = (comp.isReverse() ? -1 : 1);//horizen 1:rigth -1:left
 
+        cc.log("other collision stay enter %s",this.direction);
+
         var speedOnPanel = comp.speed;//abs
 
-        var isDown = comp.isDown;
+        var isDown = -1;//comp.isDown;
 
-        var rotateOnPanel = Math.abs(cc.degreesToRadians(other.node.rotation));//>0,<0
+        var rotateOnPanel = this.m_rotateOnPanel
+        // Math.abs(cc.degreesToRadians(other.node.rotation));//>0,<0
+
+        // this.m_rotateOnPanel = rotateOnPanel
         //
         
         // 1st step 
@@ -156,7 +163,7 @@ cc.Class({
     onCollisionStay: function (other, self) {
         var comp = other.node.getComponent('panel');
 
-        cc.log("other collision stay %s",comp.m_testFlag);
+        // cc.log("other collision stay %s",comp.m_testFlag);
         if (this.collisionY === -1) {
             // if (other.node.group === 'floor') {
             //     var motion = other.node.getComponent('panel');
@@ -165,7 +172,7 @@ cc.Class({
             //     }
             // }
 
-            this.node.y = other.world.aabb.yMax;
+            // this.node.y = other.world.aabb.yMax;
 
             // var offset = cc.v2(other.world.aabb.x - other.world.preAabb.x, 0);
             
@@ -198,14 +205,18 @@ cc.Class({
 
     set_postion_y: function  (delta_y) {
         var t = this.prePosition.y + delta_y - this.stayPosy;
-        cc.log("set_postion_y %s",t);
+        cc.log("set_postion_y %s %s - %s",t,this.prePosition.y + delta_y,this.stayPosy);
         var real_pass = this.stayPosy - this.prePosition.y;
 
         if(t < 0){
+            cc.log("real_pass is %s",real_pass)
             this.node.y += real_pass;
+            this.prePosition.y = this.node.y
 
             //node.getComponent("Test");
-            this.layerRoot.y -= t;
+
+            cc.log("aaaaaaaaaaaaaaa %s,%s",delta_y,t);
+            // this.layerRoot.y -= t;
             this.layerRoot.getComponent('root').set_postionY(this.layerRoot.y - t);
 
         }else{
@@ -215,9 +226,9 @@ cc.Class({
     },
 
     update (dt) {
-        if(true){
-            return;
-        }
+        // if(true){
+        //     return;
+        // }
 
         if(this.m_gravityFall){//this.collisionY === 0
             cc.log("use gravity fall");
@@ -256,10 +267,21 @@ cc.Class({
 
         // this.preStep.x = this.speed.x * dt;
         // this.preStep.y = this.speed.y * dt;
-        
-        this.node.x += this.speed.x * dt;
+        var dt_y = this.speed.y * dt;
+        cc.log("this.speedy %s",this.speed.y);
+        if (!this.m_gravityFall)
+        {
+
+            this.node.x += this.adjust_X(dt_y);//this.speed.x * dt; //
+        }
         // this.node.y += this.speed.y * dt;
-        this.set_postion_y(this.speed.y * dt);
+        this.set_postion_y(dt_y);
 
     },
+
+    adjust_X : function (dy_y) {
+        var num = Math.abs(dy_y / Math.tan(this.m_rotateOnPanel)) * this.direction;
+        cc.log("adjust_X num %s , self.m_rotateOnPanel %s %s %s",num,this.m_rotateOnPanel,dy_y,this.direction);
+        return num;
+    }
 });

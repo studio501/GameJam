@@ -121,7 +121,7 @@
     },
     "_enabled": true,
     "panelType": 0,
-    "speed": 0,
+    "speed": 800,
     "isDown": -1,
     "isBlack": true,
     "meetSame": false,
@@ -137,7 +137,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "193c9871-2242-4a90-a44d-2653ac5d3dbf"
     },
     "fileId": "f5gyyb8RZPhLoZLT7jVPQz",
     "sync": false

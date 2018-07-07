@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>bg/01.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{902,1165},{320,543}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{320,543}</string>
+			</dict>
+			<key>bg/11.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1554,596},{320,569}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{320,569}</string>
+			</dict>
+			<key>bg/12.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1554,1485},{320,342}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{320,342}</string>
+			</dict>
+			<key>bg/22.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1176},{320,902}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{320,902}</string>
+			</dict>
+			<key>bg/23.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1445,1165},{320,515}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{320,515}</string>
+			</dict>
+			<key>bg/33.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1496},{320,894}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{320,894}</string>
+			</dict>
+			<key>bg/34.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1816},{320,213}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{320,213}</string>
+			</dict>
+			<key>bg/44.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{320,1176}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{320,1176}</string>
+			</dict>
+			<key>bg/45.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{894,1496},{320,660}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{320,660}</string>
+			</dict>
+			<key>bg/55.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1554,0},{320,596}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{320,596}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>bg.png</string>
+			<key>realTextureFileName</key>
+			<string>bg.png</string>
+			<key>size</key>
+			<string>{2048,2048}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>2048</integer>
+			<key>height</key>
+			<integer>2048</integer>
+		</dict>
+	</dict>
+</plist>

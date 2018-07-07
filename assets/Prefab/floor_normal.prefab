@@ -121,7 +121,7 @@
     },
     "_enabled": true,
     "panelType": 0,
-    "speed": 0.1,
+    "speed": 800,
     "isDown": -1,
     "isBlack": true,
     "meetSame": false,

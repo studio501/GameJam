@@ -13,7 +13,7 @@ cc.Class({
 
     properties: {
         panelType : 0,
-        speed : 0,
+        speed : 200,
         isDown : -1,
         isBlack : true,
         meetSame : false,
@@ -44,6 +44,7 @@ cc.Class({
     onLoad () {
         this.m_testFlag = 100;
         this._isReverse = this.node.rotation < 0;
+         cc.log("onLoad,isReverse %s",this._isReverse);
     },
 
     start () {
@@ -51,6 +52,7 @@ cc.Class({
     },
 
     isReverse(){
+        cc.log("isReverse %s",this._isReverse);
         return this._isReverse;
     }
 
