@@ -45,7 +45,7 @@
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
     "groupIndex": 0,
-    "autoReleaseAssets": false
+    "autoReleaseAssets": null
   },
   {
     "__type__": "cc.Node",
@@ -277,7 +277,38 @@
       }
     ],
     "layerHeight": 1600,
-    "bgIns": null
+    "bgIns": [
+      {
+        "__uuid__": "30d7f9bd-2476-472a-b0c1-960bb2413359"
+      },
+      {
+        "__uuid__": "78d421da-7a18-4bf8-bab8-410b462fe44b"
+      },
+      {
+        "__uuid__": "8555386b-c2c1-40ef-9ee0-b2efadf35bc9"
+      },
+      {
+        "__uuid__": "582ca9e3-f42c-4111-8965-01f2354b9440"
+      },
+      {
+        "__uuid__": "b129afba-b6f0-4711-a0f2-8612d496d8a4"
+      },
+      {
+        "__uuid__": "28cd7724-091e-463c-8959-c25c5bf729dd"
+      },
+      {
+        "__uuid__": "6a3b7b37-4df6-40dc-96e5-ef2c05691349"
+      },
+      {
+        "__uuid__": "4e54e9ba-bcfc-4c83-b235-a4937593fc0e"
+      },
+      {
+        "__uuid__": "465523f1-c3be-4f26-923b-5c57b25af83b"
+      },
+      {
+        "__uuid__": "2ed315f3-e448-49c4-852b-f60418e757e7"
+      }
+    ]
   },
   {
     "__type__": "d860fqQDGJAPJ3iInO6sxey",
@@ -1386,7 +1417,9 @@
     },
     "stayPosy": 200,
     "direction": 0,
-    "layerRoot": null
+    "layerRoot": {
+      "__id__": 3
+    }
   },
   {
     "__type__": "cc.Animation",
@@ -1427,7 +1460,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 37
