@@ -43,6 +43,10 @@ cc.Class({
         return this.isBlack ? 600 : 800;
     },
 
+    tellBlack(){
+        return this.isBlack;
+    },
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
