@@ -8,6 +8,7 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
+var layerData = require("./layers")
 cc.Class({
     extends: cc.Component,
 
@@ -19,9 +20,8 @@ cc.Class({
         },
         layerHeight : 1600,
         bgIns:{
-            default:null,
+            default:[],
             type:cc.Prefab,
-
         },
 
         // foo: {
@@ -44,9 +44,13 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.m_layerId = 0;
+        this.m_curLayerInfo = null;
+        this.m_layerRepeat = 0;
         this.m_layers = [];
-        this.m_currentLayer = this.getALayer();
-        this.m_nextLayer = this.getALayer();
+        this.m_bgLayers = [];
+        this.m_currentLayer = this.getALayer()[0];
+        this.m_nextLayer = this.getALayer()[0];
         this.initUsePos = 960;
         this.initUsePosBg = 960;
         this.totalLayersH = 0;
@@ -55,14 +59,19 @@ cc.Class({
         this.push_layer(this.m_currentLayer,true);
         this.push_layer(this.m_nextLayer);
 
-        this.m_bgLayers = [];
+        
         this.m_currentBg = this.getABg();
         this.push_bg(this.m_currentBg);
+
+        for(var i=0;i<layerData.length;i++){
+            cc.log("ldddd %j",layerData[i]);
+        }
         // this.m_currentBg.getComponent('bg');
     },
 
-    getABg(curLevel,nextLevel){
-        var res = cc.instantiate(this.bgIns);
+    getABg(index){
+        index = index || 0;
+        var res = cc.instantiate(this.bgIns[index]);
         return res;
     },
 
@@ -70,7 +79,7 @@ cc.Class({
         this.m_bgLayers.push(tLayer);
         var th = tLayer.height;
         var tp = cc.v2(0,this.initUsePosBg);;//cc.v2(0,this.initUsePos - th);
-        cc.log("will push onto %j",tp);
+        cc.log("will push push_bg %j %s",tp,th);
         tLayer.parent = this.node;
         tLayer.x = tp.x;
         tLayer.y = tp.y;
@@ -83,7 +92,7 @@ cc.Class({
         this.m_layers.push(tLayer);
         var th = tLayer.height;
         var tp = cc.v2(0,this.initUsePos);;//cc.v2(0,this.initUsePos - th);
-        cc.log("will push onto %j",tp);
+        cc.log("will push onto %j %s",tp,th);
         tLayer.parent = this.node;
         tLayer.x = tp.x;
         tLayer.y = tp.y;
@@ -92,28 +101,79 @@ cc.Class({
         this.initUsePos -= th;
         this.totalLayersH+=th;
 
-        if(!isInit){
+        if(isInit){
             var nextBg = this.getABg();
+            cc.log("nextBg is %s",nextBg);
+            this.push_bg(nextBg);
+        }
+    },
+
+    getLayerIns(layerId){
+        var ls = layerId.toString();
+        for(var i =0;i<this.mInslayers.length;i++){
+            if(this.mInslayers[i].name.match(ls)){
+                return this.mInslayers[i];
+            }
+        }
+    },
+
+    getBgIns(name){
+        // var ls = layerId.toString();
+        for(var i =0;i<this.bgIns.length;i++){
+            if(this.bgIns[i].name.match(name)){
+                return i;
+            }
         }
     },
 
     getALayer(options){
-        var ins_len = this.mInslayers.length;
+        var changeBgFlag = false;
+        var bgs;
+        var oldInfo;
+
+        cc.log("into hereeeeeeeeeeeeeeeeeeeeeeeeeeeee..... %s,%s %s %s",
+            this.m_layerRepeat,oldInfo && oldInfo.repeat,
+            oldInfo && oldInfo.repeat,oldInfo && oldInfo.difficult); 
+        if( (this.m_layerId == 0 && !this.m_curLayerInfo) || 
+            (this.m_curLayerInfo.repeat != 0 && this.m_layerRepeat > this.m_curLayerInfo.repeat) ){
+
+            oldInfo = this.m_curLayerInfo;
+            this.m_curLayerInfo = layerData[this.m_layerId];
+            this.m_layerId = Math.min(layerData.length - 1,this.m_layerId + 1);
+            this.m_layerRepeat = 0;
+            changeBgFlag = this.m_curLayerInfo.bg_change == "TRUE";
+            cc.log("int to threre..... %s %s ---(%s)",changeBgFlag,this.m_curLayerInfo.difficult,this.m_layerId);
+        }
+
+        if(changeBgFlag){
+            cc.log("oldInfo & newInfo",oldInfo,this.m_curLayerInfo);
+            bgs = layerData[this.m_layerId-1].difficult.toString() + this.m_curLayerInfo.difficult.toString();
+        }
+        else{
+            bgs = this.m_curLayerInfo.difficult.toString() + this.m_curLayerInfo.difficult.toString();
+        }
+
+        var tlyaers = this.m_curLayerInfo.random
+
+        var ins_len = tlyaers.length;
         var randIndex = Math.floor(cc.random0To1() * ins_len);
-        cc.log("randIndex is %s %s",randIndex,ins_len);
-        var res  = cc.instantiate(this.mInslayers[randIndex]);
+        cc.log("randIndex is %s %s bgs %s",randIndex,ins_len,bgs);
+        //this.mInslayers[randIndex]
+        var res  = cc.instantiate(this.getLayerIns(tlyaers[randIndex])); 
         cc.log("getALayer %s",res.name);
         if(!res){
             cc.log("error,no res return in getALayer");
         }
-        return res;
+        this.m_layerRepeat++;
+        this.m_lastBgs = bgs;
+        return [res,changeBgFlag,bgs];
     },
 
     set_postionY : function  (posY) {
         this.node.y = posY;
         //(960 - this.initUsePos)
-        cc.log("hhhhh %s %s",posY + 960,- this.initUsePos);
-        if(posY + 960 > ( - this.initUsePos) - this.m_layers[this.m_layers.length -1].height * 1/100)
+        // cc.log("hhhhh %s %s",posY + 960,- this.initUsePos);
+        if(posY + 960 > ( - this.initUsePos)  )
         {
             var tl
             if(this.m_layers.length > 2 ){
@@ -122,25 +182,42 @@ cc.Class({
             }
 
             this.m_currentLayer = this.m_layers[0];
-            this.m_nextLayer = this.getALayer();
+            var ta = this.getALayer();
+            this.m_nextLayer = ta[0];
+            var changeBgFlag = ta[1];
+            var bgs = ta[2];
+            var bgIndex = this.getBgIns()
+
             this.push_layer(this.m_nextLayer);
 
-            var nowName = this.m_currentLayer.name;
-            var nextName = this.m_nextLayer.name;
+            // if (changeBgFlag){
+                // var nowName = this.m_currentLayer.name;
+                // var nextName = this.m_nextLayer.name;
 
-            var nowNameArr = nowName.split(" ");
-            var nextNameArr = nextName.split(" ");
-            nowName = nowNameArr[nowNameArr.length - 1];
-            nextName = nextNameArr[nextNameArr.length - 1];
-            
-            var tbg = this.getABg();
-            this.push_bg(tbg);
-            tbg.getComponent('bg').showBg2(nowName,nextName);
+                // var nowNameArr = nowName.split(" ");
+                // var nextNameArr = nextName.split(" ");
+                // nowName = nowNameArr[nowNameArr.length - 1];
+                // nextName = nextNameArr[nextNameArr.length - 1];
 
-            if(this.m_bgLayers.length > 2){
-                tl = this.m_bgLayers.shift();
-                tl.removeFromParent();
-            }
+                // cc.log(" -this.initUsePosBg < posY + 960 ??? %s,%s",-this.initUsePosBg , posY + 960)
+                while(-this.initUsePosBg < posY + 960+ 600){
+                    var tbg = this.getABg(bgIndex);
+                    // tbg.getComponent('bg').showBg1(bgs);
+                    this.push_bg(tbg);
+                }
+                
+                cc.log("will show bgs offfff %s",bgs);
+                // if(-this.initUsePosBg < posY + 960){
+                //     tbg = this.getABg();
+                //     // tbg.getComponent('bg').showBg1(bgs);
+                //     this.push_bg(tbg);
+                // }
+
+                if(this.m_bgLayers.length > 5){
+                    tl = this.m_bgLayers.shift();
+                    tl.removeFromParent();
+                }
+            // }
             // cc.director.pause();
         }
     },

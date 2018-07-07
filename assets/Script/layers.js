@@ -1,4 +1,4 @@
-[
+const layerData = [
   {
     "id": 1,
     "difficult": 1,
@@ -380,3 +380,5 @@
     ]
   }
 ]
+
+module.exports = layerData;
