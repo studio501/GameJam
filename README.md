@@ -1,2 +1,0 @@
-# GameJam
-Gamejam little game

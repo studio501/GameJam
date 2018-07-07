@@ -12,6 +12,15 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        gravity: -1000,
+        speed: cc.v2(0, 0),
+        maxSpeed: cc.v2(2000, 2000),
+        stayPosy : 640,
+        direction : 0,
+        layerRoot :{
+            default:null,
+            type:cc.Node
+        }
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -31,11 +40,226 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+        cc.log("ball onLoad");
+        this.touchingNumber = 0;
 
-    start () {
-        this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
+        this.collisionX = 0;
+        this.collisionY = 0;
+        this.m_gravityFall = true;
+        this.prePosition = cc.v2();
+
+        this.m_stayOnPanel = null;
+
+        this.m_blackState = true;
+        //this.preStep = cc.v2();
     },
 
-    // update (dt) {},
+    start () {
+        //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
+    },
+
+    onEnable: function () {
+        cc.director.getCollisionManager().enabled = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true;
+    },
+
+    onDisable: function () {
+        cc.director.getCollisionManager().enabled = false;
+        cc.director.getCollisionManager().enabledDebugDraw = false;
+    },
+
+    onCollisionEnter: function (other, self) {
+        this.node.color = cc.Color.RED;
+
+        this.touchingNumber ++;
+
+        this.m_gravityFall = false;
+
+        var comp = other.node.getComponent('panel');
+
+        cc.log("other collision stay enter %s (%s,%s)",comp.m_testFlag,this.speed.x,this.speed.y);
+
+        this.direction = (comp.isReverse() ? -1 : 1);//horizen 1:rigth -1:left
+
+        var speedOnPanel = comp.speed;//abs
+
+        var isDown = comp.isDown;
+
+        var rotateOnPanel = Math.abs(cc.degreesToRadians(other.node.rotation));//>0,<0
+        //
+        
+        // 1st step 
+        // get pre aabb, go back before collision
+        var otherAabb = other.world.aabb;
+        var otherPreAabb = other.world.preAabb.clone();
+
+        var selfAabb = self.world.aabb;
+        var selfPreAabb = self.world.preAabb.clone();
+
+        // 2nd step
+        // forward x-axis, check whether collision on x-axis
+        selfPreAabb.x = selfAabb.x;
+        otherPreAabb.x = otherAabb.x;
+
+        //this.speed.x > 0 right < 0 left
+        //this.speed.y > 0 
+
+
+        cc.log("sin & cos %s,%s",Math.sin(rotateOnPanel),Math.cos(rotateOnPanel));
+        this.speed = cc.v2(speedOnPanel * Math.cos(rotateOnPanel) * this.direction,speedOnPanel * Math.sin(rotateOnPanel) * isDown);
+        cc.log('after set speed (%s,%s)',this.speed.x,this.speed.y);
+        cc.log('after set speed %s %s',rotateOnPanel,speedOnPanel);
+        cc.log("self(%s,%s) other(%s,%s)",selfPreAabb.xMin,selfPreAabb.xMax,
+            otherPreAabb.xMin,otherPreAabb.xMax);
+        if (cc.Intersection.rectRect(selfPreAabb, otherPreAabb)) {
+            cc.log("selfPreAabb.xMax > otherPreAabb.xMax %s",selfPreAabb.xMax > otherPreAabb.xMax);
+            // if (this.speed.x < 0 && (selfPreAabb.xMax > otherPreAabb.xMax)) {
+            if (this.speed.x < 0 ) {
+                // this.node.x = otherPreAabb.xMax - this.node.parent.x;
+                this.collisionX = -1;
+            }
+            else if (this.speed.x > 0 ) {//&& (selfPreAabb.xMin < otherPreAabb.xMin)
+                // this.node.x = otherPreAabb.xMin - selfPreAabb.width - this.node.parent.x;
+                this.collisionX = 1;
+            }
+
+            //this.speed.x =  //0;
+            other.touchingX = true;
+            cc.log("collision on x-axis");
+            // return;
+        }
+
+        // 3rd step
+        // forward y-axis, check whether collision on y-axis
+        selfPreAabb.y = selfAabb.y;
+        otherPreAabb.y = otherAabb.y;
+
+        if (cc.Intersection.rectRect(selfPreAabb, otherPreAabb)) {
+            cc.log("collision on y-axis");
+            if (this.speed.y < 0 ) {//&& (selfPreAabb.yMax > otherPreAabb.yMax
+                // this.node.y = otherPreAabb.yMax - this.node.parent.y;
+                //this.jumping = false;
+                this.collisionY = -1;
+            }
+            else if (this.speed.y > 0 ) {//&& (selfPreAabb.yMin < otherPreAabb.yMin)
+                // this.node.y = otherPreAabb.yMin - selfPreAabb.height - this.node.parent.y;
+                this.collisionY = 1;
+            }
+            
+            //this.speed.y = ; //0;
+            other.touchingY = true;
+        }    
+        
+    },
+    
+    onCollisionStay: function (other, self) {
+        var comp = other.node.getComponent('panel');
+
+        cc.log("other collision stay %s",comp.m_testFlag);
+        if (this.collisionY === -1) {
+            // if (other.node.group === 'floor') {
+            //     var motion = other.node.getComponent('panel');
+            //     if (motion) {
+            //         this.node.x += motion._movedDiff;
+            //     }
+            // }
+
+            this.node.y = other.world.aabb.yMax;
+
+            // var offset = cc.v2(other.world.aabb.x - other.world.preAabb.x, 0);
+            
+            // var temp = cc.affineTransformClone(self.world.transform);
+            // temp.tx = temp.ty = 0;
+            
+            // offset = cc.pointApplyAffineTransform(offset, temp);
+            // this.node.x += offset.x;
+        }
+    },
+    
+    onCollisionExit: function (other) {
+        cc.log("collision exit");
+        this.m_gravityFall = true;
+        this.touchingNumber --;
+        if (this.touchingNumber === 0) {
+            this.node.color = cc.Color.WHITE;
+        }
+
+        if (other.touchingX) {
+            this.collisionX = 0;
+            other.touchingX = false;
+        }
+        else if (other.touchingY) {
+            other.touchingY = false;
+            this.collisionY = 0;
+            //this.jumping = true;
+        }
+    },
+
+    set_postion_y: function  (delta_y) {
+        var t = this.prePosition.y + delta_y - this.stayPosy;
+        cc.log("set_postion_y %s",t);
+        var real_pass = this.stayPosy - this.prePosition.y;
+
+        if(t < 0){
+            this.node.y += real_pass;
+
+            //node.getComponent("Test");
+            this.layerRoot.y -= t;
+            this.layerRoot.getComponent('root').set_postionY(this.layerRoot.y - t);
+
+        }else{
+            this.node.y += delta_y;
+        }
+
+    },
+
+    update (dt) {
+        if(true){
+            return;
+        }
+
+        if(this.m_gravityFall){//this.collisionY === 0
+            cc.log("use gravity fall");
+            this.speed.y += this.gravity * dt;
+            if (Math.abs(this.speed.y) > this.maxSpeed.y) {
+                this.speed.y = this.speed.y > 0 ? this.maxSpeed.y : -this.maxSpeed.y;
+            }
+
+            this.speed.x = 0;
+        }
+
+        // if (this.direction === 0) {
+        //     if (this.speed.x > 0) {
+        //         this.speed.x -= this.drag * dt;
+        //         if (this.speed.x <= 0) this.speed.x = 0;
+        //     }
+        //     else if (this.speed.x < 0) {
+        //         this.speed.x += this.drag * dt;
+        //         if (this.speed.x >= 0) this.speed.x = 0;
+        //     }
+        // }
+        // else {
+            // this.speed.x += (this.direction > 0 ? 1 : -1) * this.drag * dt;
+            // if (Math.abs(this.speed.x) > this.maxSpeed.x) {
+            //     this.speed.x = this.speed.x > 0 ? this.maxSpeed.x : -this.maxSpeed.x;
+            // }
+        // }
+
+        // if (this.speed.x * this.collisionX > 0) {
+        //     this.speed.x = 0;
+        // }
+
+
+        this.prePosition.x = this.node.x;
+        this.prePosition.y = this.node.y;
+
+        // this.preStep.x = this.speed.x * dt;
+        // this.preStep.y = this.speed.y * dt;
+        
+        this.node.x += this.speed.x * dt;
+        // this.node.y += this.speed.y * dt;
+        this.set_postion_y(this.speed.y * dt);
+
+    },
 });

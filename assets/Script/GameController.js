@@ -106,7 +106,9 @@ cc.Class({
         //     console.log("pk result %j",data);
         //     global.gameEventListener.fire("pk_result",data);
         // });
-        this.enterGameWorld();
+
+
+        //this.enterGameWorld();
     } ,
 
     enterMainWorld : function () {
