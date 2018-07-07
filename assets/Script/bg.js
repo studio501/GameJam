@@ -55,9 +55,13 @@ cc.Class({
     showBg(nameStr){
         this.getComponent(cc.Sprite).spriteFrame = this.sprite_frames.getSpriteFrame(nameStr);
     },
+    showBg1(s1){
+        this.getComponent(cc.Sprite).spriteFrame = this.sprite_frames.getSpriteFrame("bg-"+s1);
+    },
     showBg2(s1,s2){
         this.getComponent(cc.Sprite).spriteFrame = this.sprite_frames.getSpriteFrame("bg-"+s1+s2);
     },
+
 
     // update (dt) {},
 });

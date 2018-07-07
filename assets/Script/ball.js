@@ -7,7 +7,8 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
-
+var EventListener = require("./event_listener");
+var global = require("./global");
 cc.Class({
     extends: cc.Component,
 
@@ -51,7 +52,16 @@ cc.Class({
 
         this.m_stayOnPanel = null;
 
-        this.m_blackState = true;
+        this.setBlack(true)
+
+        var self = this;
+        global.eventlistener.on("changeWhite",function (uid) {
+            self.setBlack(false);
+        });
+
+        global.eventlistener.on("changeBlack",function (uid) {
+            self.setBlack(true);
+        });
         //this.preStep = cc.v2();
     },
 
@@ -59,6 +69,13 @@ cc.Class({
         //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
 
         this.m_rotateOnPanel = Math.abs(cc.degreesToRadians(30));
+    },
+
+    setBlack (isBlack) {
+        //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
+
+        this.m_blackState = isBlack;
+        this.node.color = (isBlack ? cc.Color.BLACK : cc.Color.WHITE);
     },
 
     onEnable: function () {
@@ -71,14 +88,35 @@ cc.Class({
         cc.director.getCollisionManager().enabledDebugDraw = false;
     },
 
+    adjugeCollision: function (comp) {
+        if(this.m_blackState !== comp.tellBlack()){
+            cc.log("Game Over");
+            global.eventlistener.fire("gameover");
+        }
+    },
+
+    handleMeetSame : function (comp) {
+        var flag = comp.meetSame && this.m_blackState == comp.tellBlack();
+        if(flag){
+            global.eventlistener.fire("pernatrateSame");
+        }
+        return flag;
+    },
+
     onCollisionEnter: function (other, self) {
-        this.node.color = cc.Color.RED;
+        // this.node.color = cc.Color.RED;
+        var comp = other.node.getComponent('panel');
+        if(this.handleMeetSame(comp)){
+            return;
+        }
+
+        this.adjugeCollision(comp);
 
         this.touchingNumber ++;
 
         this.m_gravityFall = false;
 
-        var comp = other.node.getComponent('panel');
+        
 
         
 
@@ -163,6 +201,12 @@ cc.Class({
     onCollisionStay: function (other, self) {
         var comp = other.node.getComponent('panel');
 
+        if(this.handleMeetSame(comp)){
+            return;
+        }
+
+        this.adjugeCollision(comp)
+
         // cc.log("other collision stay %s",comp.m_testFlag);
         if (this.collisionY === -1) {
             // if (other.node.group === 'floor') {
@@ -189,7 +233,7 @@ cc.Class({
         this.m_gravityFall = true;
         this.touchingNumber --;
         if (this.touchingNumber === 0) {
-            this.node.color = cc.Color.WHITE;
+            // this.node.color = cc.Color.WHITE;
         }
 
         if (other.touchingX) {
@@ -201,21 +245,25 @@ cc.Class({
             this.collisionY = 0;
             //this.jumping = true;
         }
+        if(!other.award){
+            other.award = true;
+            global.eventlistener.fire("score",other.node.getComponent('panel').score);
+        }
     },
 
     set_postion_y: function  (delta_y) {
         var t = this.prePosition.y + delta_y - this.stayPosy;
-        cc.log("set_postion_y %s %s - %s",t,this.prePosition.y + delta_y,this.stayPosy);
+        // cc.log("set_postion_y %s %s - %s",t,this.prePosition.y + delta_y,this.stayPosy);
         var real_pass = this.stayPosy - this.prePosition.y;
 
         if(t < 0){
-            cc.log("real_pass is %s",real_pass)
+            // cc.log("real_pass is %s",real_pass)
             this.node.y += real_pass;
             this.prePosition.y = this.node.y
 
             //node.getComponent("Test");
 
-            cc.log("aaaaaaaaaaaaaaa %s,%s",delta_y,t);
+            // cc.log("aaaaaaaaaaaaaaa %s,%s",delta_y,t);
             // this.layerRoot.y -= t;
             this.layerRoot.getComponent('root').set_postionY(this.layerRoot.y - t);
 
@@ -283,5 +331,9 @@ cc.Class({
         var num = Math.abs(dy_y / Math.tan(this.m_rotateOnPanel)) * this.direction;
         cc.log("adjust_X num %s , self.m_rotateOnPanel %s %s %s",num,this.m_rotateOnPanel,dy_y,this.direction);
         return num;
-    }
+    },
+    onDestroy : function (){
+        global.eventlistener.off("changeWhite");
+        global.eventlistener.off("changeBlack");
+    },
 });
