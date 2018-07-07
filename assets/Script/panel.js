@@ -39,6 +39,10 @@ cc.Class({
         // },
     },
 
+    get_speed(){
+        return this.isBlack ? 600 : 800;
+    },
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {

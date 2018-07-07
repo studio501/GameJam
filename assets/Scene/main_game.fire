@@ -264,7 +264,10 @@
         "__uuid__": "180ebb72-b78d-4efc-9867-36a517542138"
       }
     ],
-    "layerHeight": 1600
+    "layerHeight": 1600,
+    "bgIns": {
+      "__uuid__": "30d7f9bd-2476-472a-b0c1-960bb2413359"
+    }
   },
   {
     "__type__": "cc.Node",

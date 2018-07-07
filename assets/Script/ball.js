@@ -86,7 +86,7 @@ cc.Class({
 
         cc.log("other collision stay enter %s",this.direction);
 
-        var speedOnPanel = comp.speed;//abs
+        var speedOnPanel = comp.get_speed();//abs
 
         var isDown = -1;//comp.isDown;
 
