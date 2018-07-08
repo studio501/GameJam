@@ -94,6 +94,8 @@ cc.Class({
             cc.audioEngine.stop(this.m_bgId);
 
         cc.audioEngine.stopAll();
+
+        global.Score = 0;
     },
 
     showPlayGame : function(isInit){
