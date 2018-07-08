@@ -7,7 +7,8 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
-
+var EventListener = require("./event_listener");
+var global = require("./global");
 cc.Class({
     extends: cc.Component,
 
@@ -15,11 +16,15 @@ cc.Class({
         gravity: -1000,
         speed: cc.v2(0, 0),
         maxSpeed: cc.v2(2000, 2000),
-        stayPosy : 640,
+        stayPosy : 200,
         direction : 0,
         layerRoot :{
             default:null,
             type:cc.Node
+        },
+        scoreTxt:{
+            default :null,
+            type : cc.Label
         }
         // foo: {
         //     // ATTRIBUTES:
@@ -51,12 +56,36 @@ cc.Class({
 
         this.m_stayOnPanel = null;
 
-        this.m_blackState = true;
+        this.setBlack(true,true)
+
+        var self = this;
+        global.eventlistener.on("changeWhite",function (uid) {
+            self.setBlack(false);
+        });
+
+        global.eventlistener.on("changeBlack",function (uid) {
+            self.setBlack(true);
+        });
+
+        this.scoreTxt.string = "0"
         //this.preStep = cc.v2();
     },
 
     start () {
         //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
+
+        this.m_rotateOnPanel = Math.abs(cc.degreesToRadians(30));
+    },
+
+    setBlack (isBlack,isInit) {
+        //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
+
+        this.m_blackState = isBlack;
+        // this.node.color = (isBlack ? cc.Color.BLACK : cc.Color.WHITE);
+        if(!isInit){
+            var aName = (isBlack ? "w2b" : "b2w");
+            this.node.getComponent(cc.Animation).play(aName);
+        }
     },
 
     onEnable: function () {
@@ -69,24 +98,59 @@ cc.Class({
         cc.director.getCollisionManager().enabledDebugDraw = false;
     },
 
+    adjugeCollision: function (comp) {
+        if(this.m_blackState !== comp.tellBlack()){
+            cc.log("Game Over");
+            global.eventlistener.fire("gameover");
+        }
+    },
+
+    handleMeetSame : function (comp) {
+        var flag = comp.meetSame && this.m_blackState != comp.tellBlack();
+        if(flag){
+            global.eventlistener.fire("pernatrateSame");
+            if(comp.meetSame){
+                global.Score += comp.score;
+                global.eventlistener.fire("score",comp.score);
+                this.scoreTxt.string = global.Score.toString();
+            }
+        }
+
+        if(comp.name.match("pass")){
+            flag = true;
+        }
+        return flag;
+    },
+
     onCollisionEnter: function (other, self) {
-        this.node.color = cc.Color.RED;
+        // this.node.color = cc.Color.RED;
+        var comp = other.node.getComponent('panel');
+        if(this.handleMeetSame(comp)){
+            return;
+        }
+
+        this.adjugeCollision(comp);
 
         this.touchingNumber ++;
 
         this.m_gravityFall = false;
 
-        var comp = other.node.getComponent('panel');
+        
 
-        cc.log("other collision stay enter %s (%s,%s)",comp.m_testFlag,this.speed.x,this.speed.y);
+        
 
         this.direction = (comp.isReverse() ? -1 : 1);//horizen 1:rigth -1:left
 
-        var speedOnPanel = comp.speed;//abs
+        cc.log("other collision stay enter %s",this.direction);
 
-        var isDown = comp.isDown;
+        var speedOnPanel = comp.get_speed();//abs
 
-        var rotateOnPanel = Math.abs(cc.degreesToRadians(other.node.rotation));//>0,<0
+        var isDown = -1;//comp.isDown;
+
+        var rotateOnPanel = this.m_rotateOnPanel
+        // Math.abs(cc.degreesToRadians(other.node.rotation));//>0,<0
+
+        // this.m_rotateOnPanel = rotateOnPanel
         //
         
         // 1st step 
@@ -156,7 +220,13 @@ cc.Class({
     onCollisionStay: function (other, self) {
         var comp = other.node.getComponent('panel');
 
-        cc.log("other collision stay %s",comp.m_testFlag);
+        if(this.handleMeetSame(comp)){
+            return;
+        }
+
+        this.adjugeCollision(comp)
+
+        // cc.log("other collision stay %s",comp.m_testFlag);
         if (this.collisionY === -1) {
             // if (other.node.group === 'floor') {
             //     var motion = other.node.getComponent('panel');
@@ -165,7 +235,7 @@ cc.Class({
             //     }
             // }
 
-            this.node.y = other.world.aabb.yMax;
+            // this.node.y = other.world.aabb.yMax;
 
             // var offset = cc.v2(other.world.aabb.x - other.world.preAabb.x, 0);
             
@@ -182,7 +252,7 @@ cc.Class({
         this.m_gravityFall = true;
         this.touchingNumber --;
         if (this.touchingNumber === 0) {
-            this.node.color = cc.Color.WHITE;
+            // this.node.color = cc.Color.WHITE;
         }
 
         if (other.touchingX) {
@@ -194,18 +264,30 @@ cc.Class({
             this.collisionY = 0;
             //this.jumping = true;
         }
+        if(!other.award){
+            other.award = true;
+            var ts = other.node.getComponent('panel').score;
+            global.Score += ts
+            global.eventlistener.fire("score",ts);
+            cc.log("will set scoreTxt %s %s",ts,global.Score);
+            this.scoreTxt.string = global.Score.toString();
+        }
     },
 
     set_postion_y: function  (delta_y) {
         var t = this.prePosition.y + delta_y - this.stayPosy;
-        cc.log("set_postion_y %s",t);
+        // cc.log("set_postion_y %s %s - %s",t,this.prePosition.y + delta_y,this.stayPosy);
         var real_pass = this.stayPosy - this.prePosition.y;
 
         if(t < 0){
+            // cc.log("real_pass is %s",real_pass)
             this.node.y += real_pass;
+            this.prePosition.y = this.node.y
 
             //node.getComponent("Test");
-            this.layerRoot.y -= t;
+
+            // cc.log("aaaaaaaaaaaaaaa %s,%s",delta_y,t);
+            // this.layerRoot.y -= t;
             this.layerRoot.getComponent('root').set_postionY(this.layerRoot.y - t);
 
         }else{
@@ -215,9 +297,9 @@ cc.Class({
     },
 
     update (dt) {
-        if(true){
-            return;
-        }
+        // if(true){
+        //     return;
+        // }
 
         if(this.m_gravityFall){//this.collisionY === 0
             cc.log("use gravity fall");
@@ -256,10 +338,25 @@ cc.Class({
 
         // this.preStep.x = this.speed.x * dt;
         // this.preStep.y = this.speed.y * dt;
-        
-        this.node.x += this.speed.x * dt;
-        // this.node.y += this.speed.y * dt;
-        this.set_postion_y(this.speed.y * dt);
+        var dt_y = this.speed.y * dt;
+        cc.log("this.speedy %s",this.speed.y);
+        if (!this.m_gravityFall)
+        {
 
+            this.node.x += this.adjust_X(dt_y);//this.speed.x * dt; //
+        }
+        // this.node.y += this.speed.y * dt;
+        this.set_postion_y(dt_y);
+
+    },
+
+    adjust_X : function (dy_y) {
+        var num = Math.abs(dy_y / Math.tan(this.m_rotateOnPanel)) * this.direction;
+        cc.log("adjust_X num %s , self.m_rotateOnPanel %s %s %s",num,this.m_rotateOnPanel,dy_y,this.direction);
+        return num;
+    },
+    onDestroy : function (){
+        global.eventlistener.off("changeWhite");
+        global.eventlistener.off("changeBlack");
     },
 });

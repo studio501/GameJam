@@ -12,11 +12,15 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        tarNode:
-        {
-            type:cc.Node,
-            default:null
+        sprite_frames :{
+            default:null,
+            type:cc.SpriteAtlas
         }
+        // tarNode:
+        // {
+        //     type:cc.Node,
+        //     default:null
+        // }
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -38,13 +42,26 @@ cc.Class({
 
     onLoad () {
         // cc.rect(0, 0, 960, 640)
-        var followAction = cc.follow(this.tarNode,cc.rect(0, 0, 2000, 2000));
-        this.node.runAction(followAction);
+        // var followAction = cc.follow(this.tarNode,cc.rect(0, 0, 2000, 2000));
+        // this.node.runAction(followAction);
+        // this.getComponent(cc.Sprite).spriteFrame = this.sprite_frames.getSpriteFrame("bg-01");
+        this.showBg("bg-01");
     },
 
     start () {
 
     },
+
+    showBg(nameStr){
+        this.getComponent(cc.Sprite).spriteFrame = this.sprite_frames.getSpriteFrame(nameStr);
+    },
+    showBg1(s1){
+        this.getComponent(cc.Sprite).spriteFrame = this.sprite_frames.getSpriteFrame("bg-"+s1);
+    },
+    showBg2(s1,s2){
+        this.getComponent(cc.Sprite).spriteFrame = this.sprite_frames.getSpriteFrame("bg-"+s1+s2);
+    },
+
 
     // update (dt) {},
 });

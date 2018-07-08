@@ -13,7 +13,7 @@ cc.Class({
 
     properties: {
         panelType : 0,
-        speed : 0,
+        speed : 200,
         isDown : -1,
         isBlack : true,
         meetSame : false,
@@ -39,11 +39,32 @@ cc.Class({
         // },
     },
 
+    get_speed(){
+        return this.isBlack ? 600 : 800;
+    },
+
+    tellBlack(){
+        return this.isBlack;
+    },
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.m_testFlag = 100;
         this._isReverse = this.node.rotation < 0;
+        cc.log("onLoad,isReverse %s",this._isReverse);
+
+        this.meetSame = !!this.node.getChildByName("score_icon");
+
+        var black = this.node.getChildByName("b");
+        var white = this.node.getChildByName("w");
+        if(black){
+            black.active = this.isBlack;
+        }
+
+        if(white){
+            white.active = !this.isBlack;
+        }
     },
 
     start () {
@@ -51,6 +72,7 @@ cc.Class({
     },
 
     isReverse(){
+        cc.log("isReverse %s",this._isReverse);
         return this._isReverse;
     }
 
