@@ -180,7 +180,8 @@ cc.Class({
 
         if(changeBgFlag){
             cc.log("oldInfo & newInfo",oldInfo,this.m_curLayerInfo);
-            bgs = layerData[this.m_layerId-1].difficult.toString() + this.m_curLayerInfo.difficult.toString();
+            var sHead = (oldInfo && oldInfo.difficult.toString()) || Math.max(this.m_curLayerInfo.difficult - 1,0);
+            bgs = sHead.toString() + this.m_curLayerInfo.difficult.toString();
         }
         else{
             bgs = this.m_curLayerInfo.difficult.toString() + this.m_curLayerInfo.difficult.toString();
@@ -219,56 +220,39 @@ cc.Class({
             this.m_nextLayer = ta[0];
             var changeBgFlag = ta[1];
             var bgs = ta[2];
-            var bgIndex = this.getBgIns()
+            var bgIndex = this.getBgIns(bgs)
 
             this.push_layer(this.m_nextLayer);
 
-
             var nh = this.m_nextLayer.height;
-            // if (changeBgFlag){
-                // var nowName = this.m_currentLayer.name;
-                // var nextName = this.m_nextLayer.name;
+            
+            while(-this.initUsePosBg < posY + 960+ 600){
+                var tbg = this.getABg(bgIndex);
+                this.push_bg(tbg);
+            }
 
-                // var nowNameArr = nowName.split(" ");
-                // var nextNameArr = nextName.split(" ");
-                // nowName = nowNameArr[nowNameArr.length - 1];
-                // nextName = nextNameArr[nextNameArr.length - 1];
+            var te = 0;
 
-                // cc.log(" -this.initUsePosBg < posY + 960 ??? %s,%s",-this.initUsePosBg , posY + 960)
-                while(-this.initUsePosBg < posY + 960+ 600){
-                    var tbg = this.getABg(bgIndex);
-                    // tbg.getComponent('bg').showBg1(bgs);
-                    this.push_bg(tbg);
-                }
-
-                var te = 0;
-
-                while(te < nh){
-                    cc.log("te < nh %s,%s %s -- >%s",te,nh,-this.initUseEdge,posY);
-                    // tbg.getComponent('bg').showBg1(bgs);
-                    var teg = this.getAnEdge();
-                    this.push_edge(teg);
-                    te += teg.height;
-                }
+            while(te < nh){
+                cc.log("te < nh %s,%s %s -- >%s",te,nh,-this.initUseEdge,posY);
                 
-                cc.log("will show bgs offfff %s %s",bgs,this.m_edgeLayers.length);
-                // if(-this.initUsePosBg < posY + 960){
-                //     tbg = this.getABg();
-                //     // tbg.getComponent('bg').showBg1(bgs);
-                //     this.push_bg(tbg);
-                // }
+                var teg = this.getAnEdge();
+                this.push_edge(teg);
+                te += teg.height;
+            }
+            
+            cc.log("will show bgs offfff %s %s",bgs,this.m_edgeLayers.length);
+            
 
-                if(this.m_bgLayers.length > 5){
-                    tl = this.m_bgLayers.shift();
-                    tl.removeFromParent();
-                }
+            if(this.m_bgLayers.length > 5){
+                tl = this.m_bgLayers.shift();
+                tl.removeFromParent();
+            }
 
-                if(this.m_edgeLayers.length > 10){
-                    tl = this.m_edgeLayers.shift();
-                    tl.removeFromParent();
-                }
-            // }
-            // cc.director.pause();
+            if(this.m_edgeLayers.length > 10){
+                tl = this.m_edgeLayers.shift();
+                tl.removeFromParent();
+            }
         }
     },
 
