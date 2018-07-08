@@ -47,6 +47,13 @@ cc.Class({
         return this.isBlack;
     },
 
+    tryHideBrain(){
+        var rw = this.node.getChildByName("score_icon");
+        if(rw){
+            rw.active = false;
+        }
+    },
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {

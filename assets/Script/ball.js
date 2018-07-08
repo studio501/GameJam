@@ -124,6 +124,7 @@ cc.Class({
                 global.Score += comp.score;
                 global.eventlistener.fire("score",comp.score);
                 this.scoreTxt.string = global.Score.toString();
+                comp.tryHideBrain();
             }
         }
 

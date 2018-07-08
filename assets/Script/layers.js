@@ -13,31 +13,31 @@ const layerData = [
     "id": 2,
     "difficult": 1,
     "bg_change": "FALSE",
-    "repeat": 3,
+    "repeat": 1,
     "random": [
       102,
-      103
+      403
     ]
   },
   {
     "id": 3,
     "difficult": 2,
     "bg_change": "TRUE",
-    "repeat": 2,
+    "repeat": 1,
     "random": [
       201,
-      202
+      402
     ]
   },
   {
     "id": 4,
     "difficult": 2,
     "bg_change": "FALSE",
-    "repeat": 5,
+    "repeat": 1,
     "random": [
       203,
       204,
-      205,
+      405,
       206
     ]
   },
@@ -45,7 +45,7 @@ const layerData = [
     "id": 5,
     "difficult": 2,
     "bg_change": "FALSE",
-    "repeat": 5,
+    "repeat": 1,
     "random": [
       207,
       208,
@@ -57,14 +57,14 @@ const layerData = [
     "id": 6,
     "difficult": 2,
     "bg_change": "FALSE",
-    "repeat": 3,
+    "repeat": 1,
     "random": [
       211,
       212,
       213,
       214,
       105,
-      106
+      402
     ]
   },
   {
@@ -80,10 +80,10 @@ const layerData = [
     "id": 8,
     "difficult": 3,
     "bg_change": "FALSE",
-    "repeat": 2,
+    "repeat": 1,
     "random": [
       302,
-      303,
+      403,
       304,
       305
     ]
@@ -92,7 +92,7 @@ const layerData = [
     "id": 9,
     "difficult": 3,
     "bg_change": "FALSE",
-    "repeat": 5,
+    "repeat": 1,
     "random": [
       306,
       307,
@@ -124,7 +124,7 @@ const layerData = [
     "id": 11,
     "difficult": 4,
     "bg_change": "TRUE",
-    "repeat": 2,
+    "repeat": 1,
     "random": [
       403,
       404
@@ -134,7 +134,7 @@ const layerData = [
     "id": 12,
     "difficult": 4,
     "bg_change": "FALSE",
-    "repeat": 3,
+    "repeat": 1,
     "random": [
       401,
       402,
@@ -150,7 +150,7 @@ const layerData = [
     "id": 13,
     "difficult": 4,
     "bg_change": "FALSE",
-    "repeat": 4,
+    "repeat": 1,
     "random": [
       405,
       406,
@@ -167,7 +167,7 @@ const layerData = [
     "id": 14,
     "difficult": 4,
     "bg_change": "FALSE",
-    "repeat": 2,
+    "repeat": 1,
     "random": [
       414,
       415,
@@ -179,7 +179,7 @@ const layerData = [
     "id": 15,
     "difficult": 5,
     "bg_change": "TRUE",
-    "repeat": 2,
+    "repeat": 1,
     "random": [
       501,
       502
@@ -189,7 +189,7 @@ const layerData = [
     "id": 16,
     "difficult": 5,
     "bg_change": "FALSE",
-    "repeat": 3,
+    "repeat": 1,
     "random": [
       503,
       504,
@@ -204,7 +204,7 @@ const layerData = [
     "id": 17,
     "difficult": 5,
     "bg_change": "FALSE",
-    "repeat": 3,
+    "repeat": 1,
     "random": [
       511,
       512,
@@ -218,7 +218,7 @@ const layerData = [
     "id": 18,
     "difficult": 6,
     "bg_change": "TRUE",
-    "repeat": 2,
+    "repeat": 1,
     "random": [
       601,
       602
@@ -228,7 +228,7 @@ const layerData = [
     "id": 19,
     "difficult": 6,
     "bg_change": "FALSE",
-    "repeat": 2,
+    "repeat": 1,
     "random": [
       603,
       604,
