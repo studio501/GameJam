@@ -184,7 +184,13 @@
     "panelType": 0,
     "speed": 2000,
     "isDown": -1,
-    "isBlack": true
+    "isBlack": true,
+    "meetSame": false,
+    "meetDiff": 0,
+    "score": 1,
+    "combo": false,
+    "pSpeed": 100,
+    "weight": []
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -314,7 +320,13 @@
     "panelType": 0,
     "speed": 2000,
     "isDown": -1,
-    "isBlack": true
+    "isBlack": true,
+    "meetSame": false,
+    "meetDiff": 0,
+    "score": 1,
+    "combo": false,
+    "pSpeed": 100,
+    "weight": []
   },
   {
     "__type__": "cc.PrefabInfo",
