@@ -114,6 +114,17 @@
 				<key>sourceSize</key>
 				<string>{320,596}</string>
 			</dict>
+			<key>bg/edge.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{320,1816},{64,745}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{64,745}</string>
+			</dict>
 		</dict>
 		<key>metadata</key>
 		<dict>
