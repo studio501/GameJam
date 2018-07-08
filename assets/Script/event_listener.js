@@ -12,9 +12,9 @@ const EventListener = function (obj) {
     };
 
     obj.fire = function (name) {
-        console.log("fire "+ name);
+        cc.log("fire "+ name);
         if(Register.hasOwnProperty(name)){
-            console.log("has own "+ name);
+            cc.log("has own "+ name);
             var handlerList = Register[name];
             for(let i =0;i<handlerList.length;i++){
                 let handler = handlerList[i];
@@ -28,7 +28,7 @@ const EventListener = function (obj) {
     };
 
     obj.off = function (name, method) {
-        console.log("off handler name = "+ name);
+        cc.log("off handler name = "+ name);
         if(Register.hasOwnProperty((name))){
             var handlerList = Register[name];
             for(var i =0;i<handlerList.length;++i){

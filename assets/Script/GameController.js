@@ -19,14 +19,14 @@ cc.Class({
         //     default : null,
         //     type : cc.Prefab
         // },
-        game :{
-            default:null,
-            type:cc.Prefab
-        },
-        login :{
-            default:null,
-            type:cc.Prefab
-        },
+        // game :{
+        //     default:null,
+        //     type:cc.Prefab
+        // },
+        // login :{
+        //     default:null,
+        //     type:cc.Prefab
+        // },
     },
 
     // LIFE-CYCLE CALLBACKS:

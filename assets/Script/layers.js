@@ -3,380 +3,252 @@ const layerData = [
     "id": 1,
     "difficult": 1,
     "bg_change": "TRUE",
-    "repeat": 3,
+    "repeat": 1,
     "random": [
-      401,
-      402,
-      403
+      101,
+      102
     ]
   },
   {
     "id": 2,
     "difficult": 1,
     "bg_change": "FALSE",
-    "repeat": 4,
+    "repeat": 3,
     "random": [
-      403,
-      405,
-      404,
-      404,
-      406
+      102,
+      103
     ]
   },
   {
     "id": 3,
-    "difficult": 1,
-    "bg_change": "FALSE",
-    "repeat": 5,
+    "difficult": 2,
+    "bg_change": "TRUE",
+    "repeat": 2,
     "random": [
-      410,
-      411,
-      415
+      201,
+      202
     ]
   },
   {
     "id": 4,
-    "difficult": 1,
+    "difficult": 2,
     "bg_change": "FALSE",
-    "repeat": 10,
+    "repeat": 5,
     "random": [
-      402,
-      412,
-      408
+      203,
+      204,
+      205,
+      206
     ]
   },
   {
     "id": 5,
     "difficult": 2,
-    "bg_change": "TRUE",
-    "repeat": 25,
+    "bg_change": "FALSE",
+    "repeat": 5,
     "random": [
-      411,
-      412,
-      413,
-      414
+      207,
+      208,
+      209,
+      210
     ]
   },
   {
     "id": 6,
     "difficult": 2,
     "bg_change": "FALSE",
-    "repeat": 10,
+    "repeat": 3,
     "random": [
-      402,
-      412,
-      408
+      211,
+      212,
+      213,
+      214,
+      105,
+      106
     ]
   },
   {
     "id": 7,
-    "difficult": 2,
-    "bg_change": "FALSE",
-    "repeat": 25,
+    "difficult": 3,
+    "bg_change": "TRUE",
+    "repeat": 1,
     "random": [
-      411,
-      412,
-      413,
-      414
+      301
     ]
   },
   {
     "id": 8,
-    "difficult": 2,
+    "difficult": 3,
     "bg_change": "FALSE",
-    "repeat": 10,
+    "repeat": 2,
     "random": [
-      402,
-      412,
-      408
+      302,
+      303,
+      304,
+      305
     ]
   },
   {
     "id": 9,
     "difficult": 3,
-    "bg_change": "TRUE",
-    "repeat": 25,
+    "bg_change": "FALSE",
+    "repeat": 5,
     "random": [
-      411,
-      412,
-      413,
-      414
+      306,
+      307,
+      308,
+      309,
+      310,
+      311,
+      312,
+      313,
+      213,
+      214,
+      213,
+      214
     ]
   },
   {
     "id": 10,
     "difficult": 3,
     "bg_change": "FALSE",
-    "repeat": 10,
+    "repeat": 1,
     "random": [
-      402,
-      412,
-      408
+      314,
+      315,
+      211,
+      212
     ]
   },
   {
     "id": 11,
-    "difficult": 3,
-    "bg_change": "FALSE",
-    "repeat": 25,
+    "difficult": 4,
+    "bg_change": "TRUE",
+    "repeat": 2,
     "random": [
-      411,
-      412,
-      413,
-      414
+      403,
+      404
     ]
   },
   {
     "id": 12,
-    "difficult": 3,
+    "difficult": 4,
     "bg_change": "FALSE",
-    "repeat": 10,
+    "repeat": 3,
     "random": [
+      401,
       402,
-      412,
-      408
+      409,
+      410,
+      411,
+      312,
+      313,
+      214
     ]
   },
   {
     "id": 13,
-    "difficult": 3,
+    "difficult": 4,
     "bg_change": "FALSE",
-    "repeat": 25,
+    "repeat": 4,
     "random": [
-      411,
+      405,
+      406,
+      407,
+      408,
       412,
       413,
-      414
+      307,
+      308,
+      309
     ]
   },
   {
     "id": 14,
     "difficult": 4,
-    "bg_change": "TRUE",
-    "repeat": 10,
+    "bg_change": "FALSE",
+    "repeat": 2,
     "random": [
-      402,
-      412,
-      408
+      414,
+      415,
+      313,
+      312
     ]
   },
   {
     "id": 15,
-    "difficult": 4,
-    "bg_change": "FALSE",
-    "repeat": 25,
+    "difficult": 5,
+    "bg_change": "TRUE",
+    "repeat": 2,
     "random": [
-      411,
-      412,
-      413,
-      414
+      501,
+      502
     ]
   },
   {
     "id": 16,
-    "difficult": 4,
+    "difficult": 5,
     "bg_change": "FALSE",
-    "repeat": 10,
+    "repeat": 3,
     "random": [
-      402,
-      412,
-      408
+      503,
+      504,
+      505,
+      506,
+      405,
+      406,
+      407
     ]
   },
   {
     "id": 17,
-    "difficult": 4,
+    "difficult": 5,
     "bg_change": "FALSE",
-    "repeat": 25,
+    "repeat": 3,
     "random": [
-      411,
-      412,
-      413,
-      414
+      511,
+      512,
+      513,
+      514,
+      408,
+      412
     ]
   },
   {
     "id": 18,
-    "difficult": 4,
-    "bg_change": "FALSE",
-    "repeat": 10,
+    "difficult": 6,
+    "bg_change": "TRUE",
+    "repeat": 2,
     "random": [
-      402,
-      412,
-      408
+      601,
+      602
     ]
   },
   {
     "id": 19,
-    "difficult": 5,
-    "bg_change": "TRUE",
-    "repeat": 25,
+    "difficult": 6,
+    "bg_change": "FALSE",
+    "repeat": 2,
     "random": [
-      411,
-      412,
-      413,
-      414
+      603,
+      604,
+      605
     ]
   },
   {
     "id": 20,
-    "difficult": 5,
-    "bg_change": "FALSE",
-    "repeat": 10,
-    "random": [
-      402,
-      412,
-      408
-    ]
-  },
-  {
-    "id": 21,
-    "difficult": 5,
-    "bg_change": "FALSE",
-    "repeat": 25,
-    "random": [
-      411,
-      412,
-      413,
-      414
-    ]
-  },
-  {
-    "id": 22,
-    "difficult": 5,
-    "bg_change": "FALSE",
-    "repeat": 10,
-    "random": [
-      402,
-      412,
-      408
-    ]
-  },
-  {
-    "id": 23,
-    "difficult": 5,
-    "bg_change": "FALSE",
-    "repeat": 25,
-    "random": [
-      411,
-      412,
-      413,
-      414
-    ]
-  },
-  {
-    "id": 24,
-    "difficult": 5,
-    "bg_change": "FALSE",
-    "repeat": 10,
-    "random": [
-      402,
-      412,
-      408
-    ]
-  },
-  {
-    "id": 25,
-    "difficult": 6,
-    "bg_change": "TRUE",
-    "repeat": 25,
-    "random": [
-      411,
-      412,
-      413,
-      414
-    ]
-  },
-  {
-    "id": 26,
     "difficult": 6,
     "bg_change": "FALSE",
-    "repeat": 10,
+    "repeat": 0,
     "random": [
-      402,
-      412,
-      408
-    ]
-  },
-  {
-    "id": 27,
-    "difficult": 6,
-    "bg_change": "FALSE",
-    "repeat": 25,
-    "random": [
-      411,
-      412,
-      413,
-      414
-    ]
-  },
-  {
-    "id": 28,
-    "difficult": 6,
-    "bg_change": "FALSE",
-    "repeat": 10,
-    "random": [
-      402,
-      412,
-      408
-    ]
-  },
-  {
-    "id": 29,
-    "difficult": 6,
-    "bg_change": "FALSE",
-    "repeat": 25,
-    "random": [
-      411,
-      412,
-      413,
-      414
-    ]
-  },
-  {
-    "id": 30,
-    "difficult": 6,
-    "bg_change": "FALSE",
-    "repeat": 10,
-    "random": [
-      402,
-      412,
-      408
-    ]
-  },
-  {
-    "id": 31,
-    "difficult": 6,
-    "bg_change": "FALSE",
-    "repeat": 25,
-    "random": [
-      411,
-      412,
-      413,
-      414
-    ]
-  },
-  {
-    "id": 32,
-    "difficult": 6,
-    "bg_change": "FALSE",
-    "repeat": 10,
-    "random": [
-      402,
-      412,
-      408
-    ]
-  },
-  {
-    "id": 33,
-    "difficult": 6,
-    "bg_change": "FALSE",
-    "repeat": 25,
-    "random": [
-      411,
-      412,
-      413,
-      414
+      606,
+      607,
+      608,
+      609,
+      515,
+      516,
+      414,
+      415
     ]
   }
 ]

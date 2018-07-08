@@ -106,9 +106,18 @@ cc.Class({
     },
 
     handleMeetSame : function (comp) {
-        var flag = comp.meetSame && this.m_blackState == comp.tellBlack();
+        var flag = comp.meetSame && this.m_blackState != comp.tellBlack();
         if(flag){
             global.eventlistener.fire("pernatrateSame");
+            if(comp.meetSame){
+                global.Score += comp.score;
+                global.eventlistener.fire("score",comp.score);
+                this.scoreTxt.string = global.Score.toString();
+            }
+        }
+
+        if(comp.name.match("pass")){
+            flag = true;
         }
         return flag;
     },

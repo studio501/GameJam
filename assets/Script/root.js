@@ -9,6 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
 var layerData = require("./layers")
+var global = require("./global")
 cc.Class({
     extends: cc.Component,
 
@@ -51,6 +52,11 @@ cc.Class({
         this.m_layerId = 0;
         this.m_curLayerInfo = null;
         this.m_layerRepeat = 0;
+        this.bg_interval_micro = 2;
+        this.edge_interval_micro = 0.5;
+
+        this.test_layer = null; //null;//405;
+
         this.m_layers = [];
         this.m_bgLayers = [];
         this.m_edgeLayers = [];
@@ -60,6 +66,8 @@ cc.Class({
         this.initUsePosBg = 960;
         this.initUseEdge = 960;
         this.totalLayersH = 0;
+
+
         // this.m_layers.push(this.m_currentLayer);
         // this.m_layers.push(this.m_nextLayer);
         this.push_layer(this.m_currentLayer,true);
@@ -67,11 +75,11 @@ cc.Class({
 
         
         this.m_currentBg = this.getABg();
-        this.push_bg(this.m_currentBg);
+        this.push_bg(this.m_currentBg,true);
 
         for(var i=0;i<6;++i){
             var edge = this.getAnEdge()
-            this.push_edge(edge);
+            this.push_edge(edge,i == 0);
         }
 
         // for(var i=0;i<layerData.length;i++){
@@ -85,10 +93,11 @@ cc.Class({
         return res;
     },
 
-    push_edge : function  (tLayer) {
+    push_edge : function  (tLayer,isInit) {
         this.m_edgeLayers.push(tLayer);
         var th = tLayer.height;
-        var tp = cc.v2(0,this.initUseEdge);;//cc.v2(0,this.initUsePos - th);
+        // var adj = (!isInit && this.edge_interval_micro) || 0;
+        var tp = cc.v2(0,this.initUseEdge );;//cc.v2(0,this.initUsePos - th);
         
         tLayer.parent = this.node;
         tLayer.x = tp.x;
@@ -106,10 +115,11 @@ cc.Class({
         return res;
     },
 
-    push_bg : function  (tLayer) {
+    push_bg : function  (tLayer,isInit) {
         this.m_bgLayers.push(tLayer);
+        // var adj = (!isInit && this.bg_interval_micro) || 0;
         var th = tLayer.height;
-        var tp = cc.v2(0,this.initUsePosBg);;//cc.v2(0,this.initUsePos - th);
+        var tp = cc.v2(0,this.initUsePosBg );;//cc.v2(0,this.initUsePos - th);
         cc.log("will push push_bg %j %s",tp,th);
         tLayer.parent = this.node;
         tLayer.x = tp.x;
@@ -148,6 +158,7 @@ cc.Class({
                 return this.mInslayers[i];
             }
         }
+        cc.log("can't find any layer for %s",layerId)
     },
 
     getBgIns(name){
@@ -193,7 +204,8 @@ cc.Class({
         var randIndex = Math.floor(cc.random0To1() * ins_len);
         cc.log("randIndex is %s %s bgs %s",randIndex,ins_len,bgs);
         //this.mInslayers[randIndex]
-        var res  = cc.instantiate(this.getLayerIns(tlyaers[randIndex])); 
+        var trIndex = this.test_layer || tlyaers[randIndex];
+        var res  = cc.instantiate(this.getLayerIns(trIndex)); 
         cc.log("getALayer %s",res.name);
         if(!res){
             cc.log("error,no res return in getALayer");
@@ -203,11 +215,19 @@ cc.Class({
         return [res,changeBgFlag,bgs];
     },
 
+    tell_layer_will_end : function (t) {
+        var p = t.parent;
+        var pos = cc.v2(t.x,t.y - t.height);
+        var wp = p.convertToWorldSpace(pos);
+        return wp.y > - 200;
+    },
+
     set_postionY : function  (posY) {
         this.node.y = posY;
         //(960 - this.initUsePos)
         // cc.log("hhhhh %s %s",posY + 960,- this.initUsePos);
-        if(posY + 960 > ( - this.initUsePos)  )
+        // if(posY + 960 > ( - this.initUsePos)  )
+        if(this.tell_layer_will_end(this.m_nextLayer))
         {
             var tl
             if(this.m_layers.length > 2 ){
@@ -233,25 +253,25 @@ cc.Class({
 
             var te = 0;
 
-            while(te < nh){
-                cc.log("te < nh %s,%s %s -- >%s",te,nh,-this.initUseEdge,posY);
-                
+            while(te < nh){              
                 var teg = this.getAnEdge();
                 this.push_edge(teg);
                 te += teg.height;
             }
             
-            cc.log("will show bgs offfff %s %s",bgs,this.m_edgeLayers.length);
-            
 
-            if(this.m_bgLayers.length > 5){
-                tl = this.m_bgLayers.shift();
-                tl.removeFromParent();
-            }
-
-            if(this.m_edgeLayers.length > 10){
-                tl = this.m_edgeLayers.shift();
-                tl.removeFromParent();
+            this.trimLayers(this.m_bgLayers);
+            this.trimLayers(this.m_edgeLayers);
+        }
+    },
+    trimLayers (layers) {
+        for(var i = layers.length -1;i>=0;i--){
+            var t = layers[i];
+            var p = t.parent;
+            var pos = cc.v2(t.x,t.y - t.height);
+            var wp = p.convertToWorldSpace(pos);
+            if (wp.y > 960){
+                layers.splice(i, 1);
             }
         }
     },

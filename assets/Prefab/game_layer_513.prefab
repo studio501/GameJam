@@ -1996,8 +1996,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 67,
-      "y": -116
+      "x": 99,
+      "y": -87
     },
     "_skewX": 0,
     "_skewY": 0,

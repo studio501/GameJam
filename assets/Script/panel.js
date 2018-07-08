@@ -52,7 +52,19 @@ cc.Class({
     onLoad () {
         this.m_testFlag = 100;
         this._isReverse = this.node.rotation < 0;
-         cc.log("onLoad,isReverse %s",this._isReverse);
+        cc.log("onLoad,isReverse %s",this._isReverse);
+
+        this.meetSame = !!this.node.getChildByName("score_icon");
+
+        var black = this.node.getChildByName("b");
+        var white = this.node.getChildByName("w");
+        if(black){
+            black.active = this.isBlack;
+        }
+
+        if(white){
+            white.active = !this.isBlack;
+        }
     },
 
     start () {

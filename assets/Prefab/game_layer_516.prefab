@@ -2608,8 +2608,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 67,
-      "y": -116
+      "x": 99,
+      "y": -87
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2654,7 +2654,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "c6xMFHQ3pAaolSOCGGL66q",
+    "fileId": "cewp7sWjVLwJRLfA5X4lKP",
     "sync": false
   },
   {
@@ -2747,7 +2747,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "64biVKE+FMepm7Xyc8BFLl",
+    "fileId": "4495AeW21Kypx/6B6FS3M+",
     "sync": false
   },
   {
@@ -2840,7 +2840,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "1bnfkO3oFJQYsq0b56UjsJ",
+    "fileId": "6c/rlWB71DO5bPU08xHoEk",
     "sync": false
   },
   {
@@ -2890,7 +2890,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "9cd/Kl6OxImLR+xhyu74DY",
+    "fileId": "c0Bwkb5d9C2YN401B0HpDU",
     "sync": false
   },
   {
@@ -3304,8 +3304,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 67,
-      "y": -116
+      "x": 99,
+      "y": -87
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3350,7 +3350,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "b1+wMr14VKzp7+8ujjUIyH",
+    "fileId": "cewp7sWjVLwJRLfA5X4lKP",
     "sync": false
   },
   {
@@ -3443,7 +3443,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "c2gM8vfExDVprcEH1HIuW/",
+    "fileId": "4495AeW21Kypx/6B6FS3M+",
     "sync": false
   },
   {
@@ -3536,7 +3536,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "55ukwqpFhGkoD3ShD+gS9V",
+    "fileId": "6c/rlWB71DO5bPU08xHoEk",
     "sync": false
   },
   {
@@ -3586,7 +3586,7 @@
     "asset": {
       "__uuid__": "6561f44d-3f4a-41ce-9bf2-e3b513632165"
     },
-    "fileId": "a2PBE6tptI0IOe5h/JUj//",
+    "fileId": "c0Bwkb5d9C2YN401B0HpDU",
     "sync": false
   },
   {
