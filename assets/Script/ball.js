@@ -251,7 +251,9 @@ cc.Class({
         }
         if(!other.award){
             other.award = true;
-            global.eventlistener.fire("score",other.node.getComponent('panel').score);
+            var ts = other.node.getComponent('panel').score;
+            global.Score += ts
+            global.eventlistener.fire("score",ts);
         }
     },
 
