@@ -95,7 +95,6 @@ cc.Class({
 
         cc.audioEngine.stopAll();
 
-        global.Score = 0;
     },
 
     showPlayGame : function(isInit){
@@ -105,8 +104,10 @@ cc.Class({
         var ballcomp = this.ball.getComponent('ball');
         if(!isInit){
             if(this.m_bgId)
-            cc.audioEngine.stop(this.m_bgId);
+                cc.audioEngine.stop(this.m_bgId);
             this.m_bgId = cc.audioEngine.playEffect(this.bgMusic, true);
+
+            global.Score = 0;
             var rootComp = this.root.getComponent('root');
             rootComp.initOnLoad();
             ballcomp.initOnLoad();
