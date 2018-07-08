@@ -52,7 +52,7 @@ cc.Class({
 
         this.m_stayOnPanel = null;
 
-        this.setBlack(true)
+        this.setBlack(true,true)
 
         var self = this;
         global.eventlistener.on("changeWhite",function (uid) {
@@ -71,11 +71,15 @@ cc.Class({
         this.m_rotateOnPanel = Math.abs(cc.degreesToRadians(30));
     },
 
-    setBlack (isBlack) {
+    setBlack (isBlack,isInit) {
         //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
 
         this.m_blackState = isBlack;
-        this.node.color = (isBlack ? cc.Color.BLACK : cc.Color.WHITE);
+        // this.node.color = (isBlack ? cc.Color.BLACK : cc.Color.WHITE);
+        if(!isInit){
+            var aName = (isBlack ? "w2b" : "b2w");
+            this.node.getComponent(cc.Animation).play(aName);
+        }
     },
 
     onEnable: function () {
@@ -247,7 +251,9 @@ cc.Class({
         }
         if(!other.award){
             other.award = true;
-            global.eventlistener.fire("score",other.node.getComponent('panel').score);
+            var ts = other.node.getComponent('panel').score;
+            global.Score += ts
+            global.eventlistener.fire("score",ts);
         }
     },
 

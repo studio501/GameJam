@@ -227,6 +227,28 @@
       "borderRight": 0,
       "spriteType": "normal",
       "subMetas": {}
+    },
+    "bg-edge.png": {
+      "ver": "1.0.3",
+      "uuid": "6550ccdd-69c7-44ae-984d-de8ec345a890",
+      "rawTextureUuid": "59f6a4e3-9f17-4f0f-ab72-3348bc3b84f1",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": true,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 320,
+      "trimY": 1816,
+      "width": 64,
+      "height": 745,
+      "rawWidth": 64,
+      "rawHeight": 745,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
     }
   }
 }
