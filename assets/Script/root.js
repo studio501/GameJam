@@ -23,6 +23,10 @@ cc.Class({
             default:[],
             type:cc.Prefab,
         },
+        edgeIns:{
+            default:null,
+            type:cc.Prefab,
+        }
 
         // foo: {
         //     // ATTRIBUTES:
@@ -49,10 +53,12 @@ cc.Class({
         this.m_layerRepeat = 0;
         this.m_layers = [];
         this.m_bgLayers = [];
+        this.m_edgeLayers = [];
         this.m_currentLayer = this.getALayer()[0];
         this.m_nextLayer = this.getALayer()[0];
         this.initUsePos = 960;
         this.initUsePosBg = 960;
+        this.initUseEdge = 960;
         this.totalLayersH = 0;
         // this.m_layers.push(this.m_currentLayer);
         // this.m_layers.push(this.m_nextLayer);
@@ -63,10 +69,35 @@ cc.Class({
         this.m_currentBg = this.getABg();
         this.push_bg(this.m_currentBg);
 
-        for(var i=0;i<layerData.length;i++){
-            cc.log("ldddd %j",layerData[i]);
+        for(var i=0;i<6;++i){
+            var edge = this.getAnEdge()
+            this.push_edge(edge);
         }
+
+        // for(var i=0;i<layerData.length;i++){
+        //     cc.log("ldddd %j",layerData[i]);
+        // }
         // this.m_currentBg.getComponent('bg');
+    },
+
+    getAnEdge(){
+        var res = cc.instantiate(this.edgeIns);
+        return res;
+    },
+
+    push_edge : function  (tLayer) {
+        this.m_edgeLayers.push(tLayer);
+        var th = tLayer.height;
+        var tp = cc.v2(0,this.initUseEdge);;//cc.v2(0,this.initUsePos - th);
+        
+        tLayer.parent = this.node;
+        tLayer.x = tp.x;
+        tLayer.y = tp.y;
+        tLayer.setLocalZOrder(2);
+
+        tLayer.active = true;
+        this.initUseEdge -= th;
+        cc.log("will push push_edge %j %s %s",tp,th,this.initUseEdge);
     },
 
     getABg(index){
@@ -83,6 +114,7 @@ cc.Class({
         tLayer.parent = this.node;
         tLayer.x = tp.x;
         tLayer.y = tp.y;
+        tLayer.setLocalZOrder(0)
 
         tLayer.active = true;
         this.initUsePosBg -= th;
@@ -96,6 +128,7 @@ cc.Class({
         tLayer.parent = this.node;
         tLayer.x = tp.x;
         tLayer.y = tp.y;
+        tLayer.setLocalZOrder(1);
 
         tLayer.active = true;
         this.initUsePos -= th;
@@ -190,6 +223,8 @@ cc.Class({
 
             this.push_layer(this.m_nextLayer);
 
+
+            var nh = this.m_nextLayer.height;
             // if (changeBgFlag){
                 // var nowName = this.m_currentLayer.name;
                 // var nextName = this.m_nextLayer.name;
@@ -205,8 +240,18 @@ cc.Class({
                     // tbg.getComponent('bg').showBg1(bgs);
                     this.push_bg(tbg);
                 }
+
+                var te = 0;
+
+                while(te < nh){
+                    cc.log("te < nh %s,%s %s -- >%s",te,nh,-this.initUseEdge,posY);
+                    // tbg.getComponent('bg').showBg1(bgs);
+                    var teg = this.getAnEdge();
+                    this.push_edge(teg);
+                    te += teg.height;
+                }
                 
-                cc.log("will show bgs offfff %s",bgs);
+                cc.log("will show bgs offfff %s %s",bgs,this.m_edgeLayers.length);
                 // if(-this.initUsePosBg < posY + 960){
                 //     tbg = this.getABg();
                 //     // tbg.getComponent('bg').showBg1(bgs);
@@ -215,6 +260,11 @@ cc.Class({
 
                 if(this.m_bgLayers.length > 5){
                     tl = this.m_bgLayers.shift();
+                    tl.removeFromParent();
+                }
+
+                if(this.m_edgeLayers.length > 10){
+                    tl = this.m_edgeLayers.shift();
                     tl.removeFromParent();
                 }
             // }
