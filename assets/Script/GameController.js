@@ -35,7 +35,7 @@ cc.Class({
         console.log("platform is "+ cc.sys.platform);
 
         global.eventlistener = EventListener({});
-
+        global.Score = 0;
         var self = this;
         global.eventlistener.on("into_game",function (uid) {
             console.log("button click uid = "+uid);

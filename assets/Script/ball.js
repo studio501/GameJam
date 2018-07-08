@@ -21,6 +21,10 @@ cc.Class({
         layerRoot :{
             default:null,
             type:cc.Node
+        },
+        scoreTxt:{
+            default :null,
+            type : cc.Label
         }
         // foo: {
         //     // ATTRIBUTES:
@@ -62,6 +66,8 @@ cc.Class({
         global.eventlistener.on("changeBlack",function (uid) {
             self.setBlack(true);
         });
+
+        this.scoreTxt.string = "0"
         //this.preStep = cc.v2();
     },
 
@@ -254,6 +260,8 @@ cc.Class({
             var ts = other.node.getComponent('panel').score;
             global.Score += ts
             global.eventlistener.fire("score",ts);
+            cc.log("will set scoreTxt %s %s",ts,global.Score);
+            this.scoreTxt.string = global.Score.toString();
         }
     },
 
