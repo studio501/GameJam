@@ -13,6 +13,10 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        ball :{
+            default :null,
+            type : cc.Node
+        }
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -42,16 +46,19 @@ cc.Class({
      */
     addTouchEvent:function(){
 
+        var self = this;
         //父节点监听touch事件（直接子节点必须注册同样的事件方能触发）
         this.node.on(cc.Node.EventType.TOUCH_START, function (event) {
             console.log('node TOUCH_START');
-            global.eventlistener.fire("changeWhite");
+            if(self.canChange())
+                global.eventlistener.fire("changeWhite");
         }, this);
         
         //父节点监听touch事件（直接子节点必须注册同样的事件方能触发）
         this.node.on(cc.Node.EventType.TOUCH_END, function (event) {
             console.log('node TOUCH_END');
-            global.eventlistener.fire("changeBlack");
+            if(self.canChange())
+                global.eventlistener.fire("changeBlack");
         }, this);
 
         this.node.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
@@ -61,10 +68,16 @@ cc.Class({
         //父节点监听touch事件（直接子节点必须注册同样的事件方能触发）
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
             console.log('node TOUCH_CANCEL');
-            global.eventlistener.fire("changeBlack");
+            if(self.canChange())
+                global.eventlistener.fire("changeBlack");
         }, this);
          
     },
+
+    canChange : function  () {
+        return true;
+        // return this.ball.getComponent('ball').isOnBoard()
+    }
 
     // update (dt) {},
 });

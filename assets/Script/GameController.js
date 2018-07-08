@@ -15,6 +15,26 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        ball:{
+            default :null,
+            type : cc.Node
+        },
+        startui:{
+            default :null,
+            type :cc.Node
+        },
+        gameover : {
+            default :null,
+            type : cc.Node
+        },
+        root : {
+            default : null,
+            type : cc.Node
+        },
+        bgMusic: {
+            default: null,
+            url: cc.AudioClip
+        },
         // main_world_prefab :{
         //     default : null,
         //     type : cc.Prefab
@@ -37,16 +57,61 @@ cc.Class({
         global.eventlistener = EventListener({});
         global.Score = 0;
         var self = this;
-        global.eventlistener.on("into_game",function (uid) {
-            console.log("button click uid = "+uid);
-            //global.socket.emit("login",uid);
-            // self.enterGameWorld();
+        global.eventlistener.on("start_game",function (uid) {
+            
+            self.showPlayGame(true);
         });
 
+        global.eventlistener.on("end_game",function (uid) {
+            
+            self.showEndGame();
+        });
 
+        global.eventlistener.on("restart_game",function (uid) {
+            cc.log("restart_game...")
+            self.showPlayGame();
+        });
+
+        this.showStartGame();
         
-        // this.enterLoginWorld();
     } ,
+
+    showStartGame : function  () {
+        this.ball.getComponent('ball').setPause(true);
+        this.startui.active = true;
+        this.gameover.active = false;
+        if(this.m_bgId)
+            cc.audioEngine.stop(this.m_bgId);
+        this.m_bgId = cc.audioEngine.playEffect(this.bgMusic, true);
+    },
+
+    showEndGame : function  () {
+        this.ball.getComponent('ball').setPause(true);
+        this.startui.active = false;
+        this.gameover.active = true;
+        this.gameover.getComponent('gameover').showGameEnd(global.Score);
+        if(this.m_bgId)
+            cc.audioEngine.stop(this.m_bgId);
+
+        cc.audioEngine.stopAll();
+    },
+
+    showPlayGame : function(isInit){
+        this.startui.active = false;
+        this.gameover.active = false;
+
+        var ballcomp = this.ball.getComponent('ball');
+        if(!isInit){
+            if(this.m_bgId)
+            cc.audioEngine.stop(this.m_bgId);
+            this.m_bgId = cc.audioEngine.playEffect(this.bgMusic, true);
+            var rootComp = this.root.getComponent('root');
+            rootComp.initOnLoad();
+            ballcomp.initOnLoad();
+
+        }
+        ballcomp.setPause(false);
+    },
 
     enterLoginWorld : function () {
         // console.log("enter MainWorld");

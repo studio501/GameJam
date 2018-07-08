@@ -47,8 +47,20 @@ cc.Class({
     },
 
     // LIFE-CYCLE CALLBACKS:
+    onLoad(){
+        this.initOnLoad();
+    },
 
-    onLoad () {
+    tryCleanLayers(mc){
+        if(mc && mc.length > 0){
+            for(var i=mc.length -1;i>=0;i--){
+                var t = mc.pop();
+                t.removeFromParent();
+            }
+        }
+    },
+
+    initOnLoad () {
         this.m_layerId = 0;
         this.m_curLayerInfo = null;
         this.m_layerRepeat = 0;
@@ -56,6 +68,11 @@ cc.Class({
         this.edge_interval_micro = 0.5;
 
         this.test_layer = null; //null;//405;
+
+        this.tryCleanLayers(this.m_layers);
+        this.tryCleanLayers(this.m_bgLayers);
+        this.tryCleanLayers(this.m_edgeLayers);
+        this.node.y = 0;
 
         this.m_layers = [];
         this.m_bgLayers = [];
@@ -68,8 +85,6 @@ cc.Class({
         this.totalLayersH = 0;
 
 
-        // this.m_layers.push(this.m_currentLayer);
-        // this.m_layers.push(this.m_nextLayer);
         this.push_layer(this.m_currentLayer,true);
         this.push_layer(this.m_nextLayer);
 
@@ -81,11 +96,6 @@ cc.Class({
             var edge = this.getAnEdge()
             this.push_edge(edge,i == 0);
         }
-
-        // for(var i=0;i<layerData.length;i++){
-        //     cc.log("ldddd %j",layerData[i]);
-        // }
-        // this.m_currentBg.getComponent('bg');
     },
 
     getAnEdge(){

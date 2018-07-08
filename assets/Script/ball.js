@@ -25,7 +25,12 @@ cc.Class({
         scoreTxt:{
             default :null,
             type : cc.Label
-        }
+        },
+        startPos:cc.v2(0,320),
+        auios: {
+            default: [],
+            url: cc.AudioClip
+        },
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -45,14 +50,20 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad(){
+        this.initOnLoad();
+    },
+
+    initOnLoad () {
         cc.log("ball onLoad");
         this.touchingNumber = 0;
 
         this.collisionX = 0;
         this.collisionY = 0;
         this.m_gravityFall = true;
+        this.node.position = this.startPos;
         this.prePosition = cc.v2();
+        this.m_rotateOnPanel = Math.abs(cc.degreesToRadians(30));
 
         this.m_stayOnPanel = null;
 
@@ -74,7 +85,7 @@ cc.Class({
     start () {
         //this.node.runAction(cc.moveBy(5,cc.p(0,-1000)));
 
-        this.m_rotateOnPanel = Math.abs(cc.degreesToRadians(30));
+        
     },
 
     setBlack (isBlack,isInit) {
@@ -90,7 +101,7 @@ cc.Class({
 
     onEnable: function () {
         cc.director.getCollisionManager().enabled = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true;
+        cc.director.getCollisionManager().enabledDebugDraw = false;
     },
 
     onDisable: function () {
@@ -101,7 +112,7 @@ cc.Class({
     adjugeCollision: function (comp) {
         if(this.m_blackState !== comp.tellBlack()){
             cc.log("Game Over");
-            global.eventlistener.fire("gameover");
+            global.eventlistener.fire("end_game");
         }
     },
 
@@ -126,8 +137,11 @@ cc.Class({
         // this.node.color = cc.Color.RED;
         var comp = other.node.getComponent('panel');
         if(this.handleMeetSame(comp)){
+            cc.audioEngine.playEffect(this.auios[2], false);
             return;
         }
+
+        cc.audioEngine.playEffect(this.auios[0], false);
 
         this.adjugeCollision(comp);
 
@@ -220,7 +234,11 @@ cc.Class({
     onCollisionStay: function (other, self) {
         var comp = other.node.getComponent('panel');
 
+        this.m_stayOnBoard = true;
+
         if(this.handleMeetSame(comp)){
+
+            cc.audioEngine.playEffect(this.auios[2], false);
             return;
         }
 
@@ -265,6 +283,8 @@ cc.Class({
             //this.jumping = true;
         }
         if(!other.award){
+
+            this.m_stayOnBoard = false;
             other.award = true;
             var ts = other.node.getComponent('panel').score;
             global.Score += ts
@@ -272,6 +292,10 @@ cc.Class({
             cc.log("will set scoreTxt %s %s",ts,global.Score);
             this.scoreTxt.string = global.Score.toString();
         }
+    },
+
+    isOnBoard : function(){
+        return this.m_stayOnBoard;
     },
 
     set_postion_y: function  (delta_y) {
@@ -300,6 +324,9 @@ cc.Class({
         // if(true){
         //     return;
         // }
+        if(this.m_pause){
+            return
+        }
 
         if(this.m_gravityFall){//this.collisionY === 0
             cc.log("use gravity fall");
@@ -307,6 +334,8 @@ cc.Class({
             if (Math.abs(this.speed.y) > this.maxSpeed.y) {
                 this.speed.y = this.speed.y > 0 ? this.maxSpeed.y : -this.maxSpeed.y;
             }
+
+            this.m_stayOnBoard = false;
 
             this.speed.x = 0;
         }
@@ -358,5 +387,17 @@ cc.Class({
     onDestroy : function (){
         global.eventlistener.off("changeWhite");
         global.eventlistener.off("changeBlack");
+    },
+
+    // playSlide : function(){
+    //     if(!this.m_hadSlide){
+    //         this.m_hadSlide = true;
+    //         cc.audioEngine.playEffect(this.auios[0], false);
+    //     }
+
+    // },
+
+    setPause : function  (isPause) {
+        this.m_pause = isPause;  
     },
 });
