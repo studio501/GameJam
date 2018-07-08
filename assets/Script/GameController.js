@@ -40,12 +40,12 @@ cc.Class({
         global.eventlistener.on("into_game",function (uid) {
             console.log("button click uid = "+uid);
             //global.socket.emit("login",uid);
-            self.enterGameWorld();
+            // self.enterGameWorld();
         });
 
 
         
-        this.enterLoginWorld();
+        // this.enterLoginWorld();
     } ,
 
     enterLoginWorld : function () {
