@@ -1945,6 +1945,9 @@
     "direction": 0,
     "layerRoot": {
       "__id__": 3
+    },
+    "scoreTxt": {
+      "__id__": 29
     }
   },
   {
@@ -1990,8 +1993,8 @@
       "width": 640,
       "height": 960
     },
-    "_fitWidth": false,
-    "_fitHeight": true
+    "_fitWidth": true,
+    "_fitHeight": false
   },
   {
     "__type__": "b4339FvZdpNQKU7pwA2o4Ko",
