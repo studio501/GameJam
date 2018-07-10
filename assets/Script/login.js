@@ -40,7 +40,7 @@ cc.Class({
 
     buttonClick:function (event,cd) {
         
-        global.eventlistener.fire("into_game");
+        global.eventlistener.fire("login_game");
     }
 
     // update (dt) {},

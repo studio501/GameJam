@@ -3,7 +3,6 @@
   "appSecret": "",
   "encryptJs": true,
   "excludeScenes": [],
-  "fb-instant-games": {},
   "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
@@ -19,19 +18,15 @@
     "portrait": true,
     "upsideDown": false
   },
-  "packageName": "org.cocos2d.helloworld",
+  "packageName": "org.cocos2d.wanting6",
   "privateKey": "",
-  "qqplay": {
-    "REMOTE_SERVER_ROOT": "",
-    "orientation": "portrait"
-  },
   "renderMode": "0",
   "startScene": "0490f525-0f73-4da5-b7ab-bec3cf470789",
-  "title": "hello_world",
+  "title": "RollingDeep",
   "webOrientation": "auto",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
-    "appid": "wx6ac3f5090a6b99c5",
+    "appid": "wx41aa7f5862a62678",
     "isSubdomain": false,
     "orientation": "portrait",
     "subContext": ""
