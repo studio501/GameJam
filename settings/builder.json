@@ -3,6 +3,7 @@
   "appSecret": "",
   "encryptJs": true,
   "excludeScenes": [],
+  "fb-instant-games": {},
   "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
@@ -20,6 +21,10 @@
   },
   "packageName": "org.cocos2d.wanting6",
   "privateKey": "",
+  "qqplay": {
+    "REMOTE_SERVER_ROOT": "",
+    "orientation": "portrait"
+  },
   "renderMode": "0",
   "startScene": "0490f525-0f73-4da5-b7ab-bec3cf470789",
   "title": "RollingDeep",
@@ -29,7 +34,7 @@
     "appid": "wx41aa7f5862a62678",
     "isSubdomain": false,
     "orientation": "portrait",
-    "subContext": ""
+    "subContext": "roll-sub-game"
   },
   "xxteaKey": "0561cc0c-39f0-4f",
   "zipCompressJs": true

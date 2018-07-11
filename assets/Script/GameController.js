@@ -8,9 +8,10 @@
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
 
-
+//app secret : 11d40290f842b959d3ef2cb6d7a9e018
 var EventListener = require("./event_listener");
 var global = require("./global")
+var Hmac_SHA256 = require("./crypto-js/hmac-sha256");
 cc.Class({
     extends: cc.Component,
 
@@ -76,26 +77,91 @@ cc.Class({
             self.showPlayGame();
         });
 
+        global.eventlistener.on("share",function (uid) {
+            cc.log("share...")
+            if(cc.sys.platform === cc.sys.WECHAT_GAME){
+                console.log("in hereeee");
+                wx.shareAppMessage({title:"btn good day",imageUrl :  canvas.toTempFilePathSync({
+                          destWidth: 500,
+                          destHeight: 400
+                        })});
+            }
+        });
+
         global.eventlistener.on("login_game",function (uid) {
             cc.log("login_game triggerd!!!!!!!!!");
             if(cc.sys.platform === cc.sys.WECHAT_GAME){
                 wx.login({
                     success : function (res) {
-                        console.log("wx login success...");
+                        console.log("wx login success... code ",res.code);
+
+                        // wx.code2accessToken({
+                        //     appid : "wx41aa7f5862a62678",
+                        //     secret : "11d40290f842b959d3ef2cb6d7a9e018",
+                        //     js_code : res.code,
+                        //     grant_type : "authorization_code"
+                        // })
+
+                        let AppId = "11d40290f842b959d3ef2cb6d7a9e018";
+                        let tUrl = "https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code".format("wx41aa7f5862a62678",AppId,res.code);
+                        console.log("tUrl is",tUrl);
+                        wx.request({
+                            url : tUrl,
+                            method : "GET",
+                            data : {
+                                code : res.code
+                            },
+                            success : function (res) {
+                                console.log("get openid and session_key",res);
+                                global.os_data = res.data;
+                                let sKey = res.data.session_key;
+                                let opId = res.data.openid;
+                                // global.u_oppen_id = res.data.openid;
+                                wx.postMessage({
+                                    session_key : res.data.session_key,
+                                    openid : res.data.openid
+                                });
+
+                                let kvDataList = new Array();
+                                let tj = {
+                                    wxgame : {
+                                        score : 16,
+                                        update_time : 0
+                                    },
+                                    other : {
+                                        score2 : 100,
+                                    }
+                                };
+                                kvDataList.push({
+                                    key : "score",
+                                    value : JSON.stringify(tj)//"100"
+                                });
+
+                                console.log("kvDataList is ",kvDataList);
+                                let signature = Hmac_SHA256(kvDataList,sKey);
+                                console.log("signature is ",signature);
+                                let tUrl2 = "https://api.weixin.qq.com/wxa/set_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}&appid={4}".format(sKey,signature,opId,"hmac_sha256",AppId);
+                                console.log("tUrl2 is ",tUrl2);
+                                wx.request({
+                                    url : "https://api.weixin.qq.com/wxa/set_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}&appid={4}".format(sKey,signature,opId,"hmac_sha256",AppId),
+                                    method:"POST",
+                                    data:{
+                                        kv_list:JSON.stringify(kvDataList)
+                                    },
+                                    success:function (res) {
+                                        console.log("hhahahahah success");
+                                    },fail:function (res) {
+                                        console.log("why the fail ",res.errMsg);
+                                    }
+                                });
+
+                            },fail :function (res) {
+                                console.log("get openid and session_key fail",res.errMsg);
+                            }
+                        });
                         // console.log("")
                         var fs = wx.getFileSystemManager();
                         var downloadfile = function (url) {
-                            // fs.access({path:path,success:function () {
-                            //     console.log("already had %s",path);
-                            // },fail:function (errMsg) {
-                            //     console.log("no %s just download",path);
-                            //     wx.downloadFile({url:url,filePath:path,success : function (tempFilePath) {
-                            //         console.log("downloadfile success..."+tempFilePath);
-                            //     },fail : function (res) {
-                            //         console.log("downloadfile fail..."+ res.errMsg);
-                            //     }});
-                            // }});
-
                             wx.downloadFile({url:url,success:function (res) {
                                 console.log("downloadfile success... %s",res.tempFilePath)
                                 wx.saveFile({tempFilePath:res.tempFilePath,success:function (res) {
@@ -116,14 +182,12 @@ cc.Class({
                             },fail:function (res) {
                                 console.log("downloadfile fail... %s",res.errMsg);
                             }});
-                            
-                            
                         };
                         wx.getUserInfo({
                             success : function (res) {
                                 console.log("user info %j",res.userInfo);
                                 var checkPath = "./res/myTemp";
-                                downloadfile(res.userInfo.avatarUrl);
+                                //downloadfile(res.userInfo.avatarUrl);
 
                             },
                             fail : function (res) {
@@ -132,12 +196,6 @@ cc.Class({
                                 }
                             }
                         });
-
-                        wx.showShareMenu({withShareTicket:true,success:function (res) {
-                            console.log("showShareMenu ok")
-                        },fail : function (res) {
-                            console.log("showShareMenu failed %s",res.errMsg);
-                        }});
 
                     },
                     fail : function () {
@@ -155,6 +213,8 @@ cc.Class({
             
         });
 
+        // cc.sys.localStorage.setItem("test", 101);
+
         // this.showStartGame();
         if(cc.sys.platform === cc.sys.WECHAT_GAME){
             // wx.authorize({scope:"scope.userInfo",success : function (res) {
@@ -164,6 +224,21 @@ cc.Class({
             //         console.log("authorize failed");
             //     }
             // }});
+
+            wx.showShareMenu({withShareTicket:false,success:function (res) {
+                console.log("showShareMenu ok")
+            },fail : function (res) {
+                console.log("showShareMenu failed %s",res.errMsg);
+            }});
+
+            wx.onShareAppMessage(function () {
+                return {title : "menu good day",
+                        imageUrl :  canvas.toTempFilePathSync({
+                          destWidth: 500,
+                          destHeight: 400
+                        })};
+            });
+
 
             let button = wx.createUserInfoButton({
                 type: 'text',
@@ -187,7 +262,13 @@ cc.Class({
                 button.hide();
             });
 
+            var test_var = cc.sys.localStorage.getItem("test");
+            console.log("saved value %s",test_var+1);
+
+
         }
+        
+
 
         // var g_resW = 640;
         // var g_resH = 960;

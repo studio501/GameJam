@@ -39,8 +39,12 @@ cc.Class({
     },
 
     buttonClick:function (event,cd) {
-        
-        global.eventlistener.fire("login_game");
+        if(cd === "login")
+            global.eventlistener.fire("login_game");
+        else if(cd === "share"){
+            console.log("share click"+cd);
+            global.eventlistener.fire(cd);
+        }
     }
 
     // update (dt) {},
